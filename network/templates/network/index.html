@@ -1,0 +1,115 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+<div id="all-posts">
+  <h2>Network</h2>
+
+    <!-- if the user is authenticated -->
+    {% if user.is_authenticated %}
+
+    <div class="post-form">
+    <h4>New Post</h4>
+
+    <!-- Form to make a post -->
+<form class="form" action="{% url 'index' %}" method="post">
+  {% csrf_token %}
+
+<textarea name="p" rows="4" cols="100" required></textarea>
+<br>
+
+<input  class="post-submit" type="submit" name="submit" value="Post">
+
+</form>
+</div> <!-- post-form -->
+    {% endif %}
+
+  <!-- Displaying the posts -->
+  <div class="posts">
+
+    <!-- For looping in the posts -->
+    {% for post in posts %}
+    <div class="post" id="p{{ post.id }}">
+
+      <!-- user's profile -->
+      <h5><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></h5>
+
+      <!-- if the request user is the post's owner display edit button-->
+      {% if request.user == post.user %}
+      <button class="edit-button" id="e{{ post.id }}" onclick="editShow({{ post.id }})"
+       type="button" name="edit">
+        Edit
+      </button>
+      {% endif %}
+
+      <!-- Post -->
+
+      <p id="post-text-{{ post.id }}">{{ post.post }}</p>
+      <p class="post-date" id="post-date-{{ post.id }}">{{ post.date }}</p>
+
+      <!-- Like button -->
+        <button class="like-button" id="like-button-{{ post.id }}"
+        onclick="like({{ post.id }})" type="button" name="button">
+        &#128151;
+      </button>
+
+        <span id="num-likes-{{ post.id }}">{{ post.like.count}}</span>
+
+
+    </div><!-- post -->
+
+    <!-- Editing posts -->
+
+    <div class="post-edit" id="post-edit-{{ post.id }}">
+      <h5>{{ post.user }}</h5>
+      <form id="edit-form-{{ post.id }}" method="post">
+        {% csrf_token %}
+        <textarea id="edit{{ post.id }}" name="new-post" rows="3" cols="40">{{ post.post }}</textarea>
+        <br>
+        <input class="post-submit" type="submit" id="submit-edit" name="post-editing" value="Apply Changes">
+      </form>
+
+    </div><!-- post-edit -->
+
+    {% endfor %}
+
+    <!-- Paginator -->
+
+    {% if posts.paginator.num_pages > 1 %}
+    <div class="paginator">
+      <ul class="pagination justify-content-center">
+
+      {% if posts.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+
+      </li>
+
+      {% endif %}
+
+      {% for num in posts.paginator.page_range %}
+
+      <li class="page-item">
+        <a class="page-link" href="?page={{ num }}" >{{ num }}</a>
+      </li>
+
+      {% endfor %}
+      {% if posts.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+
+      </li>
+
+      {% endif %}
+    </ul>
+      {% endif %}
+
+    </div><!-- paginator -->
+
+    </div><!-- posts -->
+
+  </div><!-- all-posts -->
+
+
+
+{% endblock %}

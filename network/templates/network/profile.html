@@ -1,0 +1,99 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+
+<div class="posts">
+{% if user.id is not request.user.id %}
+  <div class="follow">
+    <form class="" action="{% url 'profile' user.id %}" method="post">
+      {% csrf_token %}
+
+      {% if request.user in f2 %}
+      <input type="submit" name="unfollow" value="Unfollow">
+
+      {% else %}
+
+      <input type="submit" name="follow" value="Follow">
+      {% endif %}
+
+    </form>
+
+  </div><!-- follow -->
+  {% endif %}
+
+  <div class="follow-length">
+    <p>Following: {{ f|length }}</p>
+    <p>Followers: {{ f2|length }}</p>
+
+  </div>
+
+  {% for post in posts %}
+
+  <div class="post" id="p{{ post.id }}">
+    <!-- if the request user is the post's owner display edit button-->
+    {% if request.user == post.user %}
+    <button class="edit-button" id="e{{ post.id }}" onclick="editShow({{ post.id }})"
+     type="button" name="edit">
+      Edit
+    </button>
+    {% endif %}
+
+    <h4>{{ post.user }}</h4>
+    <p id="post-text-{{ post.id }}">{{ post.post }}</p>
+    <p class="post-date">{{ post.date }}</p>
+    <button class="like-button" id="like-button-{{ post.id }}" onclick="like({{ post.id }})" type="button" name="button">&#128151;</button>
+    <span id="num-likes-{{ post.id }}">{{ post.like.count}}</span>
+
+  </div><!-- post -->
+
+  <!-- Editing posts -->
+
+  <div class="post-edit" id="post-edit-{{ post.id }}">
+    <h5>{{ post.user }}</h5>
+    <form id="edit-form-{{ post.id }}" method="post">
+      {% csrf_token %}
+      <textarea id="edit{{ post.id }}" name="new-post" rows="3" cols="40">{{ post.post }}</textarea>
+      <br>
+      <input class="post-submit" type="submit" id="submit-edit" name="post-editing" value="Apply Changes">
+    </form>
+
+  </div><!-- post-edit -->
+
+  {% endfor %}
+
+  <!-- Paginator -->
+
+  {% if posts.paginator.num_pages > 1 %}
+  <div class="paginator">
+    <ul class="pagination justify-content-center">
+
+    {% if posts.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+
+    </li>
+
+    {% endif %}
+
+    {% for num in posts.paginator.page_range %}
+
+    <li class="page-item">
+      <a class="page-link" href="?page={{ num }}" >{{ num }}</a>
+    </li>
+
+    {% endfor %}
+    {% if posts.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+
+    </li>
+
+    {% endif %}
+  </ul>
+    {% endif %}
+
+  </div><!-- paginator -->
+
+</div><!-- posts -->
+
+{% endblock %}

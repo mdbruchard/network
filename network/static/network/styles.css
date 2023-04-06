@@ -1,0 +1,105 @@
+@keyframes grow {
+  0% {
+    font-size: 20px;
+  }
+  50% {
+    font-size: 25px;
+  }
+  100% {
+    font-size: 20px;
+  }
+
+}
+
+
+.post-form {
+  border: 1px solid #bfbfbf;
+  padding: 10px 0 10px 10px;
+  margin: 15px;
+  border-radius: 5px;
+}
+.post-form h4 {
+  padding: 10px 0 0 60px;
+}
+
+.form {
+  padding: 20px 0 10px 20px;
+  margin-left: 100px;
+}
+
+.form textarea {
+  width: 90%;
+  outline: none;
+  border-color: #bfbfbf;
+  border-radius: 5px;
+}
+
+.posts {
+  margin: 30px;
+
+}
+
+.post {
+  border: 1px solid #bfbfbf;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.post a {
+  font-size: 24px;
+}
+
+.post-submit {
+  background-color: #008ae6;
+  border: 2px solid #008ae6;
+  border-radius: 5px;
+  color: #fff;
+}
+.post-submit:hover {
+  background-color: #007acc;
+  border-color: #007acc;
+}
+
+.edit-button {
+  background-color: #fff;
+  outline: none;
+  border: none;
+  color: #1a75ff;
+
+}
+
+.edit-button:hover {
+  color: #003380;
+  }
+
+  .like-button {
+    background-color: #fff;
+    outline: none;
+    border: none;
+    font-size: 20px;
+
+    }
+
+    .like-button:focus {
+      animation-name: grow;
+      animation-duration: 0.4s;
+      animation-fill-mode: forwards;
+      animation-timing-function: ease;
+
+    }
+
+  .post-date {
+    color: #737373;
+  }
+.follow input {
+  background-color: #008ae6;
+  border: 2px solid #008ae6;
+  border-radius: 5px;
+  color: #fff;
+}
+.follow input:hover {
+  background-color: #007acc;
+  border-color: #007acc;
+}

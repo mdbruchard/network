@@ -1,0 +1,60 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+<div class="posts">
+
+{% for post in posts %}
+
+<div class="post" id="f{{ post.id }}">
+  <h5><a href="{% url 'profile' post.user.id %}">{{ post.user }}</a></h5>
+
+  <p id="post-text-{{ post.id}}">{{ post.post }}</p>
+  <p class="post-date" id="post-date-{{ post.id }}">{{ post.date }}</p>
+
+  <!-- Like button -->
+    <button class="like-button" id="like-button-{{ post.id }}" onclick="like({{ post.id }})" type="button" name="button">&#128151;</button>
+    <span id="num-likes-{{ post.id }}">{{ post.like.count}}</span>
+
+</div>
+
+{% empty %}
+
+<p>No followings</p>
+
+{% endfor %}
+</div><!-- posts -->
+
+<!-- Paginator -->
+
+{% if posts.paginator.num_pages > 1 %}
+<div class="paginator">
+  <ul class="pagination justify-content-center">
+
+  {% if posts.has_previous %}
+  <li class="page-item">
+    <a class="page-link" href="?page={{ posts.previous_page_number }}">Previous</a>
+
+  </li>
+
+  {% endif %}
+
+  {% for num in posts.paginator.page_range %}
+
+  <li class="page-item">
+    <a class="page-link" href="?page={{ num }}" >{{ num }}</a>
+  </li>
+
+  {% endfor %}
+  {% if posts.has_next %}
+  <li class="page-item">
+    <a class="page-link" href="?page={{ posts.next_page_number }}">Next</a>
+
+  </li>
+
+  {% endif %}
+</ul>
+  {% endif %}
+
+</div><!-- paginator -->
+
+{% endblock %}
